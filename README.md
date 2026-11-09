@@ -1,15 +1,15 @@
 "# IoT-Switch" 
   本项目是一个物联网集成项目，OME第三方的智慧开关，第三方公司提供了OME开关-->OEM配套网关-->OME配套的业务系统，而此物联网集成项目的链路拓扑是：OME开关-->OEM配套网关-->（中国移动的）ONENET物联网平台-->政务网内网服务器-->数据推送大数据平台。
-  OEM公司关键链路【OEM配套网关-->OME配套的业务系统】走的是私有协议，无法直接适配中国移动的ONNET物联网平台，此项目在【ONENET物联网平台】链路进行如下适配工作：
-  - 南向接入【MQTT批量接入】
-  - 北向推送内容【POST推送到指定URL】
+  OEM公司关键链路【OEM配套网关-->OME配套的业务系统】走的是私有协议，无法直接适配中国移动的ONENET物联网平台，此项目在【ONENET物联网平台】链路进行如下适配工作：
+  - 南向接入【MQTT批量接入】(批量接口与ONENET平台完全一样)
+  - 北向推送内容【POST推送到指定URL】(ONENET平台可配置相同的接口)
   并且因为OME配套的业务系统无法使用，在【政务网内网服务器】环节通过flask-web提供了web管理端，以及实现数据推送大数据平台的功能。
   
 ## 代码架构
 IOT/gateway_sim/
 ├── ═══ 网关侧（模拟断路器网关）═══
 ├── gen_data.py         造数据程序
-├── gateway.py          推送批量数据到MQTT程序：$sys/admin/gw0001/thing/pack/post
+├── gateway.py          推送批量数据到MQTT程序：$sys/admin/gw0001/thing/pack/post (ONENET平台批量推送接口)
 ├── config.py           网关侧共享配置
 ├── db.py               读取sqlite表中的数据，OEM网关读取OEM开关数据之后，把数据存储在本地sqlite表中
 
