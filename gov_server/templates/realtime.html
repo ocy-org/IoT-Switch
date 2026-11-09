@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card"><h3>设备实时数据（每台SN取最新一条业务数据）</h3>
+<table>
+<tr><th>设备SN</th><th>状态</th><th>电压V</th><th>电流A</th><th>有功W</th><th>无功W</th>
+    <th>功率因数</th><th>漏电mA</th><th>电能kWh</th><th>合闸次数</th><th>半小时槽</th><th>上报时间</th></tr>
+{% for d in devs %}<tr>
+  <td>{{ d.sn }}</td><td>{{ d.status_text }}</td><td>{{ d.voltage }}</td><td>{{ d.current }}</td>
+  <td>{{ d.active_power }}</td><td>{{ d.reactive_power }}</td><td>{{ d.power_factor }}</td>
+  <td>{{ d.leakage }}</td><td>{{ d.kwh }}</td><td>{{ d.switch_count }}</td>
+  <td>{{ d.half_hour_slot }}</td><td>{{ d.recv_time }}</td>
+</tr>{% endfor %}</table>
+</div>
+{% endblock %}

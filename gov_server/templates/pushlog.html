@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card"><h3>大数据平台推送日志</h3>
+<table>
+<tr><th>ID</th><th>告警ID</th><th>设备SN</th><th>转来文号trano</th><th>结果</th>
+    <th>重试次数</th><th>发送时间</th><th>平台返回</th></tr>
+{% for g in logs %}<tr>
+  <td>{{ g.id }}</td><td>{{ g.alarm_id }}</td><td>{{ g.sn }}</td><td>{{ g.trano }}</td>
+  <td>{% if g.return_code=='1' %}<span class="tag tag-ok">成功</span>
+      {% else %}<span class="tag tag-err">失败</span>{% endif %}</td>
+  <td>{{ g.retry_count }}</td><td>{{ g.send_time }}</td>
+  <td class="hint">{{ g.response_body[:90] }}</td>
+</tr>{% endfor %}</table>
+</div>
+{% endblock %}

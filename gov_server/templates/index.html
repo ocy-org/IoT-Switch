@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="stat">
+  <a class="card stat-link" href="/devices">
+    <div class="num">{{ stat.device_count }}</div>接入设备数</a>
+  <a class="card stat-link" href="/alarms">
+    <div class="num">{{ stat.alarm_today }}</div>今日告警</a>
+  <a class="card stat-link" href="/alarms?date_from=&date_to=">
+    <div class="num">{{ stat.unsent }}</div>待推送大数据平台</a>
+  <a class="card stat-link" href="/pushlog">
+    <div class="num">{{ stat.push_ok }}</div>累计推送成功</a>
+</div>
+{% if stat.unsent_noloc > 0 %}
+<div class="card" style="border-left:4px solid #e65100">
+  有 {{ stat.unsent_noloc }} 条待推送告警缺少位置信息（接口必填），
+  请到 <a href="/devices">设备管理</a> 菜单为对应设备填写。
+</div>
+{% endif %}
+<div class="card"><h3>最新告警</h3>
+  <table><tr><th>ID</th><th>设备SN</th><th>异常项</th><th>级别</th><th>时间</th><th>推送状态</th></tr>
+  {% for a in alarms %}<tr>
+    <td>{{ a.id }}</td><td>{{ a.sn }}</td><td>{{ a.bits_text }} ({{ a.code_hex }})</td>
+    <td>{{ a.level_text }}</td><td>{{ a.recv_time }}</td>
+    <td>{% if a.sent %}<span class="tag tag-ok">已推送</span>
+        {% else %}<span class="tag tag-warn">待推送</span>{% endif %}</td>
+  </tr>{% endfor %}</table>
+</div>
+{% endblock %}

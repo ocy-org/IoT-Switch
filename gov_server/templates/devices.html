@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card"><h3>设备管理（推送设备档案 + 位置信息维护）</h3>
+<p class="hint">设备列表由OneNET推送数据自动汇总；位置信息是大数据平台接口必填属性，推送告警前必须配置。</p>
+<table>
+<tr><th>设备SN</th><th>最近上报</th><th>累计告警</th><th>areaid</th><th>场所地址place</th>
+    <th>坐标X</th><th>坐标Y</th><th>场所类型</th><th>登记人/电话</th><th>操作</th></tr>
+{% for d in devs %}<tr>
+  <td>{{ d.sn }}</td><td>{{ d.last_seen or '-' }}</td><td>{{ d.alarm_cnt }}</td>
+  {% if d.place %}
+  <td>{{ d.areaid }}</td><td>{{ d.place }}</td><td>{{ d.gisp_x }}</td><td>{{ d.gisp_y }}</td>
+  <td>{{ '室内' if d.sitetype=='1' else '户外' }}</td>
+  <td>{{ d.registerperson }} / {{ d.registerphone }}</td>
+  {% else %}
+  <td colspan="6" class="hint">未配置位置信息（接口必填）</td>
+  {% endif %}
+  <td>
+    {% if d.place %}
+      <a class="btn" href="/locations/edit/{{ d.sn }}">编辑</a>
+    {% else %}
+      <a class="btn" href="/locations/edit/{{ d.sn }}">+ 新增位置</a>
+    {% endif %}
+    <form method="post" action="/locations/delete/{{ d.sn }}" style="display:inline"
+          onsubmit="return confirm('确认删除 {{ d.sn }} 的位置信息?')">
+      <button class="btn btn-del" {% if not d.place %}disabled{% endif %}>删除</button>
+    </form>
+  </td>
+</tr>{% endfor %}</table>
+</div>
+{% endblock %}

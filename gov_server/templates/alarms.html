@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+<h3>告警事件 <span class="hint">（默认显示今天，可切换时间范围）</span></h3>
+<form method="get" action="/alarms" id="rangeForm"
+      style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+  <label>开始</label>
+  <input type="date" name="date_from" value="{{ date_from }}"
+         onchange="document.getElementById('rangeForm').submit()">
+  <label>结束</label>
+  <input type="date" name="date_to" value="{{ date_to }}"
+         onchange="document.getElementById('rangeForm').submit()">
+  <button class="btn" type="submit">查询</button>
+  <a class="tag tag-quick" href="/alarms">今天</a>
+  <a class="tag tag-quick" href="/alarms?date_from={{ quick.week }}&date_to={{ quick.today }}">近7天</a>
+  <a class="tag tag-quick" href="/alarms?date_from={{ quick.month }}&date_to={{ quick.today }}">近30天</a>
+  <a class="tag tag-quick" href="/alarms?date_from=&date_to=">全部</a>
+  <span class="hint">共 {{ total }} 条</span>
+</form>
+<p class="hint">"待推送·缺位置"的告警：到 设备管理 菜单为该设备配置位置信息后，再运行 bigdata_sender.py</p>
+<table>
+<tr><th>ID</th><th>设备SN</th><th>错误码</th><th>异常项</th><th>级别</th><th>重合闸</th>
+    <th>告警时间</th><th>推送状态</th></tr>
+{% for a in alarms %}<tr>
+  <td>{{ a.id }}</td><td>{{ a.sn }}</td><td>{{ a.code_hex }}</td><td>{{ a.bits_text }}</td>
+  <td>{{ a.level_text }}</td><td>{{ a.re_close }}</td><td>{{ a.report_time }}</td>
+  <td>{% if a.sent %}<span class="tag tag-ok">已推送</span>
+      {% elif not a.hasloc %}<a class="tag tag-err" href="/locations/edit/{{ a.sn }}">待推送·缺位置</a>
+      {% else %}<span class="tag tag-warn">待推送</span>{% endif %}</td>
+</tr>{% endfor %}</table>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+﻿<!doctype html>
+<html lang="zh">
+<head>
+<meta charset="utf-8"><title>智慧用电管理系统</title>
+<style>
+ body{font-family:"Microsoft YaHei",sans-serif;margin:0;background:#f0f2f5;color:#333;font-size:14px}
+ nav{background:#1f2d3d;padding:0 24px;display:flex;align-items:center;height:52px}
+ nav .brand{color:#fff;font-size:17px;font-weight:bold;margin-right:40px}
+ nav a{color:#b8c7d9;text-decoration:none;margin-right:24px;line-height:52px}
+ nav a.active,nav a:hover{color:#fff}
+ .wrap{padding:20px 24px;max-width:1250px;margin:0 auto}
+ .card{background:#fff;border-radius:6px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.08);margin-bottom:20px}
+ .card h3{margin:0 0 14px;font-size:16px}
+ .stat{display:flex;gap:20px}
+ .stat .card{flex:1;text-align:center}
+ .stat .num{font-size:32px;font-weight:bold;color:#1f6fb2}
+ table{width:100%;border-collapse:collapse;font-size:13px}
+ th{background:#f5f7fa;text-align:left;padding:9px 10px;border-bottom:1px solid #e8eaee;color:#666}
+ td{padding:8px 10px;border-bottom:1px solid #f0f0f0}
+ tr:hover td{background:#fafbfd}
+ .btn{display:inline-block;padding:5px 14px;background:#1f6fb2;color:#fff;border:none;
+      border-radius:4px;font-size:13px;cursor:pointer;text-decoration:none}
+ .btn-del{background:#d9534f}
+ .tag{padding:2px 8px;border-radius:3px;font-size:12px;text-decoration:none}
+ .tag-ok{background:#e8f5e9;color:#2e7d32}
+ .tag-warn{background:#fff3e0;color:#e65100}
+ .tag-err{background:#fdecea;color:#c0392b}
+ form label{display:block;margin:12px 0 4px;color:#555}
+ form input,form select{width:360px;padding:7px 9px;border:1px solid #d5d9e0;border-radius:4px}
+ .req::after{content:" *";color:#d9534f}
+ .flash{background:#fff3cd;color:#856404;padding:9px 14px;border-radius:4px;margin-bottom:14px}
+ .hint{color:#999;font-size:12px}
+ a.stat-link{display:block;text-decoration:none;color:inherit;cursor:pointer;transition:.15s}
+ a.stat-link:hover{transform:translateY(-3px);box-shadow:0 4px 10px rgba(0,0,0,.12)}
+ .tag-quick{background:#eef2f7;color:#1f6fb2;margin-right:6px}
+ .tag-quick:hover{background:#dbe6f0}
+ form#rangeForm label{margin:0}
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">智慧用电管理系统</span>
+  <a href="/" class="{{ 'active' if active=='index' }}">首页面板</a>
+  <a href="/devices" class="{{ 'active' if active=='devices' }}">设备管理</a>
+  <a href="/realtime" class="{{ 'active' if active=='realtime' }}">设备实时数据</a>
+  <a href="/alarms" class="{{ 'active' if active=='alarms' }}">告警事件</a>
+  <a href="/pushlog" class="{{ 'active' if active=='pushlog' }}">推送日志</a>
+</nav>
+<div class="wrap">
+{% for msg in get_flashed_messages() %}<div class="flash">{{ msg }}</div>{% endfor %}
+{% block body %}{% endblock %}
+</div>
+</body></html>

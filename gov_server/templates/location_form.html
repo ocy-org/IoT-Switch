@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card"><h3>{% if loc.get('areaid') %}编辑{% else %}新增{% endif %}设备位置 - {{ loc.sn }}</h3>
+<form method="post" action="/locations/save">
+  <label class="req">设备SN</label>
+  <input name="sn" value="{{ loc.sn }}" list="snlist" required>
+  <datalist id="snlist">{% for s in all_sns %}<option value="{{ s }}">{% endfor %}</datalist>
+
+  <label class="req">行政区域 areaid（18位数字区域码）</label>
+  <input name="areaid" value="{{ loc.areaid or '' }}" placeholder="440326003001003000" required>
+
+  <label class="req">发生场所地址 place</label>
+  <input name="place" value="{{ loc.place or '' }}" style="width:520px"
+         placeholder="深圳市龙华区XX街道XX路XX大厦1栋2层301室" required>
+
+  <label class="req">坐标X gisp_x（经度）</label>
+  <input name="gisp_x" value="{{ loc.gisp_x or '' }}" placeholder="113.947646" required>
+
+  <label class="req">坐标Y gisp_y（纬度）</label>
+  <input name="gisp_y" value="{{ loc.gisp_y or '' }}" placeholder="22.550614" required>
+
+  <label class="req">发生场所类型 sitetype</label>
+  <select name="sitetype" required>
+    <option value="1" {{ 'selected' if loc.sitetype=='1' }}>1-室内</option>
+    <option value="2" {{ 'selected' if loc.sitetype=='2' }}>2-户外</option>
+  </select>
+
+  <label class="req">登记人 registerperson（可传"智慧用电"或实际负责人）</label>
+  <input name="registerperson" value="{{ loc.registerperson or '' }}" required>
+
+  <label class="req">登记人电话 registerphone</label>
+  <input name="registerphone" value="{{ loc.registerphone or '' }}" required>
+
+  <label>楼屋编码 housecode（选填，19或25位数字字母组合）</label>
+  <input name="housecode" value="{{ loc.housecode or '' }}">
+
+  <label>楼栋地址 houseaddr（选填）</label>
+  <input name="houseaddr" value="{{ loc.houseaddr or '' }}" style="width:520px">
+
+  <p><button class="btn" type="submit">保存</button></p>
+</form>
+</div>
+{% endblock %}
